@@ -10,6 +10,7 @@ class ExpressServer {
     constructor() {
         this.app = express();
         this.port = config.port;
+        this.basePathAuth = `${config.api.prefix}/auth`;
         this.basePathUser = `${config.api.prefix}/users`;
 
         this._middlewares();
@@ -28,7 +29,8 @@ class ExpressServer {
         this.app.head("/status", (req, res) => {
             res.status(200).end();
         });
-        this.app.use(this.basePathUser, require('../../routes/users'));
+        this.app.use(this.basePathAuth, require('../../routes/auth'));
+        this.app.use(this.basePathUser, require('../../routes/users'));        
     }
 
     _notFound() {
@@ -47,7 +49,8 @@ class ExpressServer {
             const body = {
                 error: {
                     code,
-                    message: error.message
+                    message: error.message,
+                    detail: error.data
                 }
             }
             res.status(code).json(body);
