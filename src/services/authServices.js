@@ -10,7 +10,7 @@ const login = async (email, password) => {
         // Validación de email
         const user = await userService.findByEmail(email);
         if (!user) {
-            throw new AppError('Authentication failed! Email / password does not correct.', 400);
+            throw new AppError('Authentication failed! Email / password does not correct.', 401);
         }
 
         //Validación de usuario habilitado
